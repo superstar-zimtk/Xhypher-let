@@ -1,0 +1,1775 @@
+<!DOCTYPE html><html lang="en"><head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>XHYPHER TECH | Advanced WhatsApp Bot</title>
+    <link rel="stylesheet" href="css/all.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Orbitron:wght@400;500;600;700&display=swap">
+    <link rel="icon" href="images/menu.png" type="image/png">
+    <style>
+        :root {
+            --primary: #506EF8;
+            --secondary: #8A2BE2;
+            --accent: #00BFFF;
+            --dark: #0A0E17;
+            --light: #FFFFFF;
+            --glass: rgba(255, 255, 255, 0.1);
+            --glass-border: rgba(255, 255, 255, 0.2);
+            --glass-hover: rgba(255, 255, 255, 0.15);
+            --shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.36);
+            --transition: all 0.3s ease;
+        }
+
+        .dark-mode {
+            --primary: #6884FF;
+            --secondary: #9B4DFF;
+            --accent: #1E90FF;
+            --dark: #FFFFFF;
+            --light: #0A0E17;
+            --glass: rgba(10, 14, 23, 0.6);
+            --glass-border: rgba(255, 255, 255, 0.1);
+            --glass-hover: rgba(10, 14, 23, 0.7);
+            --shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.5);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #0A0E17 0%, #1A2238 100%);
+            color: var(--light);
+            min-height: 100vh;
+            overflow-x: hidden;
+            transition: var(--transition);
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header & Navigation */
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 1000;
+            padding: 20px 0;
+            transition: var(--transition);
+        }
+
+        header.scrolled {
+            background: var(--glass);
+            backdrop-filter: blur(10px);
+            box-shadow: var(--shadow);
+            padding: 15px 0;
+        }
+
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-family: 'Orbitron', sans-serif;
+            font-weight: 700;
+            font-size: 1.8rem;
+            color: var(--light);
+            text-decoration: none;
+        }
+
+        .logo-img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 30px;
+        }
+
+        .nav-link {
+            color: var(--light);
+            text-decoration: none;
+            font-weight: 500;
+            transition: var(--transition);
+            position: relative;
+        }
+
+        .nav-link:hover {
+            color: var(--accent);
+        }
+
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--accent);
+            transition: var(--transition);
+        }
+
+        .nav-link:hover::after {
+            width: 100%;
+        }
+
+        .theme-toggle {
+            background: none;
+            border: none;
+            color: var(--light);
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .theme-toggle:hover {
+            color: var(--accent);
+            transform: rotate(30deg);
+        }
+
+        /* Hero Section */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+            padding-top: 80px;
+        }
+
+        .hero-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+        }
+
+        .hero-bg::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at 20% 50%, rgba(80, 110, 248, 0.2) 0%, transparent 50%),
+                        radial-gradient(circle at 80% 20%, rgba(138, 43, 226, 0.2) 0%, transparent 50%);
+        }
+
+        .hero-content {
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+            max-width: 650px;
+            animation: fadeInUp 1s ease;
+        }
+
+        .hero-badge {
+            background: var(--glass);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--glass-border);
+            padding: 8px 15px;
+            border-radius: 30px;
+            display: inline-block;
+            font-size: 0.9rem;
+            font-weight: 500;
+            width: fit-content;
+            box-shadow: var(--shadow);
+        }
+
+        .hero-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 3.5rem;
+            font-weight: 700;
+            line-height: 1.2;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 15px;
+        }
+
+        .hero-desc {
+            font-size: 1.2rem;
+            line-height: 1.6;
+            margin-bottom: 20px;
+            opacity: 0.9;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 15px 30px;
+            border-radius: 50px;
+            font-weight: 600;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            transition: var(--transition);
+            font-size: 1rem;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            box-shadow: 0 4px 15px rgba(80, 110, 248, 0.4);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(80, 110, 248, 0.6);
+        }
+
+        .btn-secondary {
+            background: var(--glass);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--glass-border);
+            color: var(--light);
+        }
+
+        .btn-secondary:hover {
+            background: var(--glass-hover);
+            transform: translateY(-3px);
+        }
+
+        /* Features Section */
+        .section {
+            padding: 100px 0;
+        }
+
+        .section-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2.5rem;
+            text-align: center;
+            margin-bottom: 60px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+
+        .feature-card {
+            background: var(--glass);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            padding: 30px;
+            transition: var(--transition);
+            box-shadow: var(--shadow);
+        }
+
+        .feature-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+        }
+
+        .feature-icon {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .feature-title {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+            font-weight: 600;
+            color: var(--light);
+        }
+
+        .feature-desc {
+            opacity: 0.8;
+            line-height: 1.6;
+            color: var(--light);
+        }
+
+        /* About Section */
+        .about-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 50px;
+            align-items: center;
+        }
+
+        .about-text {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .about-desc {
+            line-height: 1.8;
+            font-size: 1.1rem;
+            color: var(--light);
+        }
+
+        .about-image {
+            position: relative;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+        }
+
+        .about-image img {
+            width: 100%;
+            height: auto;
+            display: block;
+            transition: var(--transition);
+        }
+
+        .about-image:hover img {
+            transform: scale(1.05);
+        }
+
+        /* Installation Guide Styles */
+        .tabs {
+            margin-top: 40px;
+        }
+
+        .tab-buttons {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+
+        .tab-btn {
+            padding: 15px 25px;
+            background: var(--glass);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--glass-border);
+            border-radius: 10px;
+            color: var(--light);
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .tab-btn:hover {
+            background: var(--glass-hover);
+        }
+
+        .tab-btn.active {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            border-color: transparent;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .steps {
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+        }
+
+        .step {
+            display: flex;
+            gap: 20px;
+            align-items: flex-start;
+        }
+
+        .step-number {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            font-weight: 700;
+            flex-shrink: 0;
+            color: white;
+        }
+
+        .step-content {
+            flex: 1;
+        }
+
+        .step-content h3 {
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+            font-weight: 600;
+            color: var(--light);
+        }
+
+        .step-content p {
+            margin-bottom: 15px;
+            opacity: 0.9;
+            color: var(--light);
+        }
+
+        .platform-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .platform-card {
+            background: var(--glass);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--glass-border);
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+            text-decoration: none;
+            color: var(--light);
+            transition: var(--transition);
+        }
+
+        .platform-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow);
+            background: var(--glass-hover);
+        }
+
+        .platform-icon {
+            font-size: 2rem;
+            margin-bottom: 10px;
+        }
+
+        .platform-name {
+            font-weight: 600;
+        }
+
+        /* Mini Guide Styles */
+        .mini-guide {
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+        }
+
+        .mini-step {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+        }
+
+        .mini-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: var(--glass);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--glass-border);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            font-weight: 700;
+            flex-shrink: 0;
+            color: var(--light);
+        }
+
+        .mini-content {
+            flex: 1;
+        }
+
+        .mini-content h3 {
+            color: var(--light);
+            margin-bottom: 10px;
+        }
+
+        .mini-content p {
+            color: var(--light);
+            opacity: 0.9;
+        }
+
+        .mini-image {
+            margin-top: 15px;
+            border-radius: 10px;
+            overflow: hidden;
+            max-width: 300px;
+            border: 1px solid var(--glass-border);
+        }
+
+        .mini-image img {
+            width: 100%;
+            height: auto;
+        }
+
+        .success-check {
+            font-size: 3rem;
+            color: #4CAF50;
+            margin-top: 15px;
+        }
+
+        /* GitHub Guide Styles */
+        .github-guide {
+            margin-bottom: 40px;
+        }
+
+        .github-guide h3 {
+            color: var(--light);
+            margin-bottom: 15px;
+        }
+
+        .github-guide p {
+            color: var(--light);
+            opacity: 0.9;
+            margin-bottom: 20px;
+        }
+
+        .code-tabs {
+            margin: 20px 0;
+        }
+
+        .code-tab-buttons {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .code-tab-btn {
+            padding: 10px 20px;
+            background: var(--glass);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--glass-border);
+            border-radius: 5px;
+            color: var(--light);
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .code-tab-btn:hover {
+            background: var(--glass-hover);
+        }
+
+        .code-tab-btn.active {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            border-color: transparent;
+        }
+
+        .code-tab-content {
+            display: none;
+        }
+
+        .code-tab-content.active {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .code-block {
+            position: relative;
+            background: #1E1E1E;
+            border-radius: 10px;
+            overflow: hidden;
+            margin-bottom: 20px;
+            border: 1px solid var(--glass-border);
+        }
+
+        .code-block pre {
+            margin: 0;
+            padding: 20px;
+            overflow-x: auto;
+        }
+
+        .code-block code {
+            color: #D4D4D4;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+
+        .copy-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            padding: 5px 10px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 5px;
+            color: var(--light);
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .copy-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .tutorial-link {
+            text-align: center;
+            margin-top: 30px;
+        }
+
+        .tutorial-link p {
+            color: var(--light);
+            margin-bottom: 15px;
+        }
+
+        /* Join Channel Styles */
+        .join-channel {
+            background: var(--glass);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            padding: 40px;
+            display: flex;
+            gap: 40px;
+            align-items: center;
+            margin-top: 60px;
+        }
+
+        .join-content {
+            flex: 1;
+        }
+
+        .join-content h3 {
+            font-size: 1.8rem;
+            margin-bottom: 15px;
+            font-weight: 600;
+            color: var(--light);
+        }
+
+        .join-content p {
+            margin-bottom: 20px;
+            opacity: 0.9;
+            color: var(--light);
+        }
+
+        .join-image {
+            flex-shrink: 0;
+        }
+
+        .join-image img {
+            width: 150px;
+            height: 150px;
+            border-radius: 10px;
+            border: 1px solid var(--glass-border);
+        }
+
+        /* Connect Section */
+        .connect {
+            text-align: center;
+            background: linear-gradient(135deg, rgba(80, 110, 248, 0.1) 0%, rgba(138, 43, 226, 0.1) 100%);
+            padding: 100px 0;
+            position: relative;
+        }
+
+        .connect::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('images/menu.png') center/cover no-repeat;
+            opacity: 0.05;
+            z-index: -1;
+        }
+
+        .connect-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 3rem;
+            margin-bottom: 20px;
+            color: var(--light);
+        }
+
+        .connect-desc {
+            font-size: 1.2rem;
+            max-width: 600px;
+            margin: 0 auto 40px;
+            opacity: 0.9;
+            color: var(--light);
+        }
+
+        .connect-btn {
+            padding: 18px 40px;
+            font-size: 1.2rem;
+        }
+
+        /* Contact Section */
+        .contact-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 50px;
+        }
+
+        .contact-info {
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .contact-icon {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            color: white;
+        }
+
+        .contact-text {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .contact-label {
+            font-weight: 600;
+            color: var(--light);
+        }
+
+        .contact-value {
+            opacity: 0.8;
+            text-decoration: none;
+            color: var(--light);
+            transition: var(--transition);
+        }
+
+        .contact-value:hover {
+            color: var(--accent);
+        }
+
+        .contact-form {
+            background: var(--glass);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: var(--shadow);
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: var(--light);
+        }
+
+        .form-input,
+        .form-textarea {
+            width: 100%;
+            padding: 15px;
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--glass-border);
+            color: var(--light);
+            font-family: 'Poppins', sans-serif;
+            transition: var(--transition);
+        }
+
+        .form-input:focus,
+        .form-textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 2px rgba(80, 110, 248, 0.3);
+        }
+
+        .form-textarea {
+            min-height: 150px;
+            resize: vertical;
+        }
+
+        .form-submit {
+            width: 100%;
+            padding: 15px;
+            border: none;
+            border-radius: 10px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            font-size: 1rem;
+        }
+
+        .form-submit:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(80, 110, 248, 0.6);
+        }
+
+        /* Footer */
+        footer {
+            background: var(--glass);
+            backdrop-filter: blur(10px);
+            border-top: 1px solid var(--glass-border);
+            padding: 50px 0 20px;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+
+        .footer-logo {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+            display: inline-block;
+            color: var(--light);
+        }
+
+        .footer-desc {
+            opacity: 0.8;
+            line-height: 1.6;
+            margin-bottom: 20px;
+            color: var(--light);
+        }
+
+        .footer-social {
+            display: flex;
+            gap: 15px;
+        }
+
+        .social-link {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--glass);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--glass-border);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--light);
+            text-decoration: none;
+            transition: var(--transition);
+        }
+
+        .social-link:hover {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            transform: translateY(-3px);
+        }
+
+        .footer-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 20px;
+            color: var(--light);
+        }
+
+        .footer-links {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .footer-link {
+            color: var(--light);
+            opacity: 0.8;
+            text-decoration: none;
+            transition: var(--transition);
+        }
+
+        .footer-link:hover {
+            opacity: 1;
+            color: var(--accent);
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 30px;
+            border-top: 1px solid var(--glass-border);
+        }
+
+        .copyright {
+            opacity: 0.7;
+            color: var(--light);
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes float {
+            0% {
+                transform: translateY(0px);
+            }
+            50% {
+                transform: translateY(-10px);
+            }
+            100% {
+                transform: translateY(0px);
+            }
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        .float {
+            animation: float 5s ease-in-out infinite;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 992px) {
+            .hero-title {
+                font-size: 2.8rem;
+            }
+            
+            .about-content,
+            .contact-content {
+                grid-template-columns: 1fr;
+            }
+            
+            .about-image {
+                order: -1;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+            
+            .hero-title {
+                font-size: 2.3rem;
+            }
+            
+            .hero-desc {
+                font-size: 1.1rem;
+            }
+            
+            .section-title {
+                font-size: 2rem;
+            }
+            
+            .connect-title {
+                font-size: 2.5rem;
+            }
+            
+            .step {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .mini-step {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .platform-grid {
+                grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+            }
+            
+            .join-channel {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .code-block pre {
+                padding: 15px 10px;
+            }
+            
+            .code-block code {
+                font-size: 0.8rem;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .hero-title {
+                font-size: 2rem;
+            }
+            
+            .btn {
+                padding: 12px 25px;
+                font-size: 0.9rem;
+            }
+            
+            .connect-btn {
+                padding: 15px 30px;
+                font-size: 1rem;
+            }
+            
+            .feature-card {
+                padding: 20px;
+            }
+            
+            .tab-btn {
+                padding: 12px 20px;
+                font-size: 0.9rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header id="header">
+        <div class="container nav-container">
+            <a href="https://pair.subzero.gleeze.com" class="logo">
+                <img src="images/file_1756833813657.jpg" alt="XHYPHER TECH Logo" class="logo-img">
+                <span>XHYPHER TECH</span>
+            </a>
+            
+            <nav class="nav-links">
+                <a href="#features" class="nav-link">Features</a>
+                <a href="#installation" class="nav-link">Install</a>
+                <a href="#about" class="nav-link">About</a>
+                <a href="#connect" class="nav-link">Connect</a>
+                <a href="#contact" class="nav-link">Contact</a>
+            </nav>
+            
+            <button class="theme-toggle" id="themeToggle">
+                <i class="fas fa-moon"></i>
+            </button>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-bg"></div>
+        <div class="container">
+            <div class="hero-content">
+                <div class="hero-badge">
+                    <span>Advanced WhatsApp Bot</span>
+                </div>
+                
+                <h1 class="hero-title">XHYPHER TECH <span style="font-size: 2rem;">&</span> BOTS</h1>
+                
+                <p class="hero-desc">
+                    The most advanced WhatsApp bot with premium features, AI capabilities, 
+                    and seamless multi-device support. Experience the next generation of 
+                    WhatsApp automation with XHYPHER TECH.
+                </p>
+                
+                <div class="hero-buttons">
+                    <a href="https://mini.subzero.gleeze.com" class="btn btn-primary">
+                        <i class="fas fa-robot"></i> Connect Now
+                    </a>
+                    <a href="#installation" class="btn btn-secondary">
+                        <i class="fas fa-download"></i> Installation Guide
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="section" id="features">
+        <div class="container">
+            <h2 class="section-title">Premium Features</h2>
+            
+            <div class="features-grid">
+                <div class="feature-card" style="opacity: 0;">
+                    <div class="feature-icon">
+                        <i class="fas fa-brain"></i>
+                    </div>
+                    <h3 class="feature-title">AI-Powered</h3>
+                    <p class="feature-desc">
+                        Advanced artificial intelligence for natural conversations, 
+                        image generation, and smart responses.
+                    </p>
+                </div>
+                
+                <div class="feature-card" style="opacity: 0;">
+                    <div class="feature-icon">
+                        <i class="fas fa-download"></i>
+                    </div>
+                    <h3 class="feature-title">Media Downloader</h3>
+                    <p class="feature-desc">
+                        Download videos, music, and images from YouTube, Instagram, 
+                        Facebook, TikTok, and more.
+                    </p>
+                </div>
+                
+                <div class="feature-card" style="opacity: 0;">
+                    <div class="feature-icon">
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                    <h3 class="feature-title">Security</h3>
+                    <p class="feature-desc">
+                        End-to-end encryption, secure sessions, and privacy-focused 
+                        design to protect your data.
+                    </p>
+                </div>
+                
+                <div class="feature-card" style="opacity: 0;">
+                    <div class="feature-icon">
+                        <i class="fas fa-robot"></i>
+                    </div>
+                    <h3 class="feature-title">Automation</h3>
+                    <p class="feature-desc">
+                        Automate messages, reactions, status views, and more with 
+                        customizable settings.
+                    </p>
+                </div>
+                
+                <div class="feature-card" style="opacity: 0;">
+                    <div class="feature-icon">
+                        <i class="fas fa-plug"></i>
+                    </div>
+                    <h3 class="feature-title">Multi-Device</h3>
+                    <p class="feature-desc">
+                        Seamless multi-device support with cloud session storage 
+                        and automatic synchronization.
+                    </p>
+                </div>
+                
+                <div class="feature-card" style="opacity: 0;">
+                    <div class="feature-icon">
+                        <i class="fas fa-code"></i>
+                    </div>
+                    <h3 class="feature-title">Open Source</h3>
+                    <p class="feature-desc">
+                        Fully open-source codebase with regular updates and 
+                        community-driven development.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Installation Guide Section -->
+    <section class="section" id="installation">
+        <div class="container">
+            <h2 class="section-title">Installation Guide</h2>
+            
+            <div class="tabs">
+                <div class="tab-buttons">
+                    <button class="tab-btn active" data-tab="main">XHYPHER TECH (Main)</button>
+                    <button class="tab-btn" data-tab="mini">Subzero Mini</button>
+                    <button class="tab-btn" data-tab="github">GitHub Deploy</button>
+                </div>
+                
+                <!-- Main Bot Installation -->
+                <div class="tab-content active" id="main-tab">
+                    <div class="steps">
+                        <div class="step" style="opacity: 0;">
+                            <div class="step-number">1</div>
+                            <div class="step-content">
+                                <h3>Fork & Star the Repository</h3>
+                                <p>Start by forking the official XHYPHER TECH repository and give it a star to show your support!</p>
+                                <a href="https://github.com/mrfrankofcc/SUBZERO-MD/fork" target="_blank" class="btn btn-primary">
+                                    <i class="fas fa-code-branch"></i> Fork Repository
+                                </a>
+                            </div>
+                        </div>
+                        
+                        <div class="step" style="opacity: 0;">
+                            <div class="step-number">2</div>
+                            <div class="step-content">
+                                <h3>Get Session ID</h3>
+                                <p>Generate your unique session ID by scanning the QR code or using the session generator.</p>
+                                <a href="https://pair.subzero.gleeze.com" target="_blank" class="btn btn-primary">
+                                    <i class="fas fa-qrcode"></i> Get Session ID
+                                </a>
+                            </div>
+                        </div>
+                        
+                        <div class="step" style="opacity: 0;">
+                            <div class="step-number">3</div>
+                            <div class="step-content">
+                                <h3>Deploy on Your Preferred Platform</h3>
+                                <p>Choose from our supported deployment platforms to host your bot:</p>
+                                
+                                <div class="platform-grid">
+                                    <a href="https://dashboard.heroku.com/new?template=https://github.com/mrfrankofcc/SUBZERO-MD/tree/main" target="_blank" class="platform-card" style="opacity: 0;">
+                                        <div class="platform-icon">
+                                            <i class="fab fa-heroku"></i>
+                                        </div>
+                                        <div class="platform-name">Heroku</div>
+                                    </a>
+                                    
+                                    <a href="https://talkdrove.com/share-bot/11" target="_blank" class="platform-card" style="opacity: 0;">
+                                        <div class="platform-icon">
+                                            <i class="fas fa-cloud"></i>
+                                        </div>
+                                        <div class="platform-name">TalkDrove</div>
+                                    </a>
+                                    
+                                                             <a href="https://app.koyeb.com/services/deploy?type=git&repository=mrfrankofcc/SUBZERO-MD" target="_blank" class="platform-card" style="opacity: 0;">
+                                        <div class="platform-icon">
+                                            <i class="fas fa-rocket"></i>
+                                        </div>
+                                        <div class="platform-name">Koyeb</div>
+                                    </a>
+                                    
+                                    <a href="https://railway.app/new" target="_blank" class="platform-card" style="opacity: 0;">
+                                        <div class="platform-icon">
+                                            <i class="fas fa-train"></i>
+                                        </div>
+                                        <div class="platform-name">Railway</div>
+                                    </a>
+                                    
+                                    <a href="https://dashboard.render.com/web/new" target="_blank" class="platform-card" style="opacity: 0;">
+                                        <div class="platform-icon">
+                                            <i class="fas fa-server"></i>
+                                        </div>
+                                        <div class="platform-name">Render</div>
+                                    </a>
+                                    
+                                    <a href="https://subzeronodez.gleeze.com" target="_blank" class="platform-card" style="opacity: 0;">
+                                        <div class="platform-icon">
+                                            <i class="fas fa-share-nodes"></i>
+                                        </div>
+                                        <div class="platform-name">SubzeroNodes</div>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Mini Bot Installation -->
+                <div class="tab-content" id="mini-tab">
+                    <div class="mini-guide">
+                        <div class="mini-step" style="opacity: 0;">
+                            <div class="mini-icon">
+                                <i class="fas fa-1"></i>
+                            </div>
+                            <div class="mini-content">
+                                <h3>Visit Subzero Mini</h3>
+                                <p>Go to the Subzero Mini website to begin the connection process.</p>
+                                <a href="https://mini.subzero.gleeze.com" target="_blank" class="btn btn-primary">
+                                    <i class="fas fa-external-link-alt"></i> Visit Mini Website
+                                </a>
+                            </div>
+                        </div>
+                        
+                        <div class="mini-step" style="opacity: 0;">
+                            <div class="mini-icon">
+                                <i class="fas fa-2"></i>
+                            </div>
+                            <div class="mini-content">
+                                <h3>Connect via Linked Devices</h3>
+                                <p>Open WhatsApp → Settings → Linked Devices → Link a Device</p>
+                                <div class="mini-image">
+                                    <img src="images/file_1756834013259.jpg" alt="Linked Devices">
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="mini-step" style="opacity: 0;">
+                            <div class="mini-icon">
+                                <i class="fas fa-3"></i>
+                            </div>
+                            <div class="mini-content">
+                                <h3>You're Done!</h3>
+                                <p>Once connected, you can start using all Subzero Mini features immediately.</p>
+                                <div class="success-check">
+                                    <i class="fas fa-check-circle"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- GitHub Deployment -->
+                <div class="tab-content" id="github-tab">
+                    <div class="github-guide">
+                        <h3>GitHub Actions Workflow</h3>
+                        <p>Deploy using GitHub Actions with these workflow files:</p>
+                        
+                        <div class="code-tabs">
+                            <div class="code-tab-buttons">
+                                <button class="code-tab-btn active" data-code-tab="ci">CI Workflow</button>
+                                <button class="code-tab-btn" data-code-tab="24-7">24/7 Workflow</button>
+                            </div>
+                            
+                            <div class="code-tab-content active" id="ci-code">
+                                <div class="code-block">
+                                    <pre><code class="language-yaml">name: Node.js CI
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [20.x]
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v3
+
+    - name: Set up Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: ${{ matrix.node-version }}
+
+    - name: Install dependencies
+      run: npm install
+
+    - name: Start application
+      run: npm start</code></pre>
+                                    <button class="copy-btn" data-code="ci">
+                                        <i class="fas fa-copy"></i> Copy Code
+                                    </button>
+                                </div>
+                            </div>
+                            
+                            <div class="code-tab-content" id="24-7-code">
+                                <div class="code-block">
+                                    <pre><code class="language-yaml">name: SUBZERO-MD-X-MR-FRANK
+
+on:
+  workflow_dispatch:
+
+jobs:
+  loop-task:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 20
+
+      - name: Install Dependencies
+        run: npm install
+
+      - name: Run Bot (loop & auto-restart if crash)
+        run: |
+          echo "Running SUBZERO-MD in auto-restart mode..."
+          timeout 18000 bash -c 'while true; do npm start || echo "Bot crashed, restarting..."; sleep 2; done'
+
+      - name: Re-Trigger Workflow
+        if: always()
+        run: |
+          echo "Re-running workflow..."
+          curl -X POST \
+            -H "Authorization: Bearer ${{ secrets.SUBZERO }}" \
+            -H "Accept: application/vnd.github.v3+json" \
+            https://api.github.com/repos/${{ github.repository }}/actions/workflows/SUBZERO.yml/dispatches \
+            -d '{"ref":"main"}'</code></pre>
+                                    <button class="copy-btn" data-code="24-7">
+                                        <i class="fas fa-copy"></i> Copy Code
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="tutorial-link">
+                            <p>Watch the tutorial on YouTube to learn how to use these workflows:</p>
+                            <a href="https://youtube.com/@mrfr4nk" target="_blank" class="btn btn-primary">
+                                <i class="fab fa-youtube"></i> Watch Tutorial
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Join Channel Section -->
+            <div class="join-channel">
+                <div class="join-content">
+                    <h3>Join Our Official Channel</h3>
+                    <p>Stay updated with the latest features, updates, and announcements by joining our WhatsApp channel.</p>
+                    <a href="https://whatsapp.com/channel/0029VagQEmB002T7MWo3Sj1D" target="_blank" class="btn btn-primary">
+                        <i class="fab fa-whatsapp"></i> Join Channel Now
+                    </a>
+                </div>
+                <div class="join-image">
+                    <img src="images/file_1756833813657.jpg" alt="Channel QR Code">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section class="section" id="about">
+        <div class="container">
+            <h2 class="section-title">About XHYPHER TECH</h2>
+            
+            <div class="about-content">
+                <div class="about-text">
+                    <p class="about-desc">
+                        XHYPHER TECH is a powerful, feature-rich WhatsApp bot developed by Mr Frank OFC. 
+                        It offers a wide range of functionalities including media downloading, AI conversations, 
+                        automation tools, and much more.
+                    </p>
+                    
+                    <p class="about-desc">
+                        With its sleek design and advanced capabilities, XHYPHER TECH provides an unparalleled 
+                        WhatsApp experience. The bot is constantly updated with new features and improvements 
+                        to ensure the best user experience.
+                    </p>
+                    
+                    <p class="about-desc">
+                        Subzero Mini is the lightweight version of the bot, offering core functionalities 
+                        with fast performance and minimal resource usage.
+                    </p>
+                    
+                    <div class="hero-buttons">
+                        <a href="https://github.com/mrfr8nk" class="btn btn-primary">
+                            <i class="fab fa-github"></i> View on GitHub
+                        </a>
+                    </div>
+                </div>
+                
+                <div class="about-image float" style="opacity: 0;">
+                    <img src="images/menu.png" alt="XHYPHER TECH Interface">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Connect Section -->
+    <section class="connect" id="connect">
+        <div class="container">
+            <h2 class="connect-title">Ready to Get Started?</h2>
+            <p class="connect-desc">
+                Connect your WhatsApp account to XHYPHER TECH today and unlock 
+                a world of advanced features and capabilities.
+            </p>
+            <a href="https://mini.subzero.gleeze.com" class="btn btn-primary connect-btn">
+                <i class="fas fa-plug"></i> Connect Your WhatsApp Now
+            </a>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section class="section" id="contact">
+        <div class="container">
+            <h2 class="section-title">Get In Touch</h2>
+            
+            <div class="contact-content">
+                <div class="contact-info">
+                    <div class="contact-item">
+                        <div class="contact-icon">
+                            <i class="fas fa-user"></i>
+                        </div>
+                        <div class="contact-text">
+                            <span class="contact-label">Developer</span>
+                            <span class="contact-value">Mr Frank OFC</span>
+                        </div>
+                    </div>
+                    
+                    <div class="contact-item">
+                        <div class="contact-icon">
+                            <i class="fas fa-envelope"></i>
+                        </div>
+                        <div class="contact-text">
+                            <span class="contact-label">Email</span>
+                            <a href="mailto:darrelmucheri@gmail.com" class="contact-value">mrfr8nk@protonmail.com</a>
+                        </div>
+                    </div>
+                    
+                    <div class="contact-item">
+                        <div class="contact-icon">
+                            <i class="fab fa-whatsapp"></i>
+                        </div>
+                        <div class="contact-text">
+                            <span class="contact-label">WhatsApp</span>
+                            <a href="https://wa.me/263719647303" class="contact-value">+263 719 647 303</a>
+                        </div>
+                    </div>
+                    
+                    <div class="contact-item">
+                        <div class="contact-icon">
+                            <i class="fab fa-github"></i>
+                        </div>
+                        <div class="contact-text">
+                            <span class="contact-label">GitHub</span>
+                            <a href="https://github.com/mrfr8nk" class="contact-value">github.com/mrfr8nk</a>
+                        </div>
+                    </div>
+                    
+                    <div class="contact-item">
+                        <div class="contact-icon">
+                            <i class="fab fa-youtube"></i>
+                        </div>
+                        <div class="contact-text">
+                            <span class="contact-label">YouTube</span>
+                            <a href="https://youtube.com/@mrfr4nk" class="contact-value">youtube.com/@mrfr4nk</a>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="contact-form" style="opacity: 0;">
+                    <form id="contactForm">
+                        <div class="form-group">
+                            <label for="name" class="form-label">Your Name</label>
+                            <input type="text" id="name" class="form-input" required="">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="email" class="form-label">Your Email</label>
+                            <input type="email" id="email" class="form-input" required="">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="message" class="form-label">Message</label>
+                            <textarea id="message" class="form-textarea" required=""></textarea>
+                        </div>
+                        
+                        <button type="submit" class="form-submit">
+                            <i class="fas fa-paper-plane"></i> Send Message
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div>
+                    <a href="#" class="footer-logo">XHYPHER TECH</a>
+                    <p class="footer-desc">
+                        Advanced WhatsApp bot with premium features, AI capabilities, 
+                        and seamless multi-device support.
+                    </p>
+                    <div class="footer-social">
+                        <a href="https://github.com/mrfr8nk" class="social-link">
+                            <i class="fab fa-github"></i>
+                        </a>
+                        <a href="https://youtube.com/@mrfr4nk" class="social-link">
+                            <i class="fab fa-youtube"></i>
+                        </a>
+                        <a href="https://wa.me/263719647303" class="social-link">
+                            <i class="fab fa-whatsapp"></i>
+                        </a>
+                    </div>
+                </div>
+                
+                <div>
+                    <h3 class="footer-title">Quick Links</h3>
+                    <div class="footer-links">
+                        <a href="#features" class="footer-link">Features</a>
+                        <a href="#installation" class="footer-link">Installation</a>
+                        <a href="#about" class="footer-link">About</a>
+                        <a href="#contact" class="footer-link">Contact</a>
+                    </div>
+                </div>
+                
+                <div>
+                    <h3 class="footer-title">Resources</h3>
+                    <div class="footer-links">
+                        <a href="https://github.com/mrfr8nk" class="footer-link">GitHub Repository</a>
+                        <a href="https://pair.subzero.gleeze.com" class="footer-link">Connect Bot</a>
+                        <a href="https://wa.me/263719647303" class="footer-link">Support</a>
+                        <a href="https://youtube.com/@mrfr4nk" class="footer-link">Tutorials</a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p class="copyright">© 2023 XHYPHER TECH. Developed by Mr Frank OFC. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Theme Toggle
+        const themeToggle = document.getElementById('themeToggle');
+        const themeIcon = themeToggle.querySelector('i');
+        
+        themeToggle.addEventListener('click', () => {
+            document.body.classList.toggle('dark-mode');
+            
+            if (document.body.classList.contains('dark-mode')) {
+                themeIcon.classList.remove('fa-moon');
+                themeIcon.classList.add('fa-sun');
+            } else {
+                themeIcon.classList.remove('fa-sun');
+                themeIcon.classList.add('fa-moon');
+            }
+        });
+        
+        // Header scroll effect
+        const header = document.getElementById('header');
+        
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 50) {
+                header.classList.add('scrolled');
+            } else {
+                header.classList.remove('scrolled');
+            }
+        });
+        
+        // Form submission
+        const contactForm = document.getElementById('contactForm');
+        
+        contactForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            // Get form values
+            const name = document.getElementById('name').value;
+            const email = document.getElementById('email').value;
+            const message = document.getElementById('message').value;
+            
+            // Here you would typically send the form data to a server
+            // For now, we'll just show an alert
+            alert(`Thank you for your message, ${name}! We'll get back to you soon at ${email}.`);
+            
+            // Reset form
+            contactForm.reset();
+        });
+        
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                const targetId = this.getAttribute('href');
+                if (targetId === '#') return;
+                
+                const targetElement = document.querySelector(targetId);
+                if (targetElement) {
+                    window.scrollTo({
+                        top: targetElement.offsetTop - 80,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+        
+        // Animation on scroll
+        const observerOptions = {
+            root: null,
+            rootMargin: '0px',
+            threshold: 0.1
+        };
+        
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.animation = 'fadeInUp 1s ease forwards';
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, observerOptions);
+        
+        // Observe elements for animation
+        document.querySelectorAll('.feature-card, .about-image, .contact-form, .step, .mini-step, .platform-card').forEach(el => {
+            el.style.opacity = '0';
+            observer.observe(el);
+        });
+        
+        // Tab functionality for installation guide
+        const tabBtns = document.querySelectorAll('.tab-btn');
+        const tabContents = document.querySelectorAll('.tab-content');
+        
+        tabBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                const tabId = btn.getAttribute('data-tab');
+                
+                // Remove active class from all buttons and contents
+                tabBtns.forEach(b => b.classList.remove('active'));
+                tabContents.forEach(c => c.classList.remove('active'));
+                
+                // Add active class to clicked button and corresponding content
+                btn.classList.add('active');
+                document.getElementById(`${tabId}-tab`).classList.add('active');
+            });
+        });
+        
+        // Code tab functionality
+        const codeTabBtns = document.querySelectorAll('.code-tab-btn');
+        const codeTabContents = document.querySelectorAll('.code-tab-content');
+        
+        codeTabBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                const codeTabId = btn.getAttribute('data-code-tab');
+                
+                // Remove active class from all buttons and contents
+                codeTabBtns.forEach(b => b.classList.remove('active'));
+                codeTabContents.forEach(c => c.classList.remove('active'));
+                
+                // Add active class to clicked button and corresponding content
+                btn.classList.add('active');
+                document.getElementById(`${codeTabId}-code`).classList.add('active');
+            });
+        });
+        
+        // Copy code functionality
+        const copyBtns = document.querySelectorAll('.copy-btn');
+        
+        copyBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                const codeType = btn.getAttribute('data-code');
+                let codeText = '';
+                
+                if (codeType === 'ci') {
+                    codeText = `   
+                    `;
+                } else if (codeType === '24-7') {
+                    codeText = `
+                    `;
+                }
+                
+                // Copy to clipboard
+                navigator.clipboard.writeText(codeText).then(() => {
+                    const originalHtml = btn.innerHTML;
+                    btn.innerHTML = '<i class="fas fa-check"></i> Copied!';
+                    
+                    setTimeout(() => {
+                        btn.innerHTML = originalHtml;
+                    }, 2000);
+                });
+            });
+        });
+    </script>
+
+
+</body></html>
